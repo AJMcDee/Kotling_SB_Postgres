@@ -20,18 +20,18 @@ class GetUserTest() {
     @Autowired
     val restTemplate = TestRestTemplate()
 
-    val getEntity = restTemplate.getForEntity<String>("http://localhost:8080/account/DE123")
+    val getEntity = restTemplate.getForEntity<String>("http://localhost:8080/account/DE6543")
 
     @Test
-    fun `Posting get with IBAN returns positive status code`(){
+    fun `Getting with IBAN returns positive status code`(){
 
         assertThat(getEntity.statusCode, equalTo(HttpStatus.OK))
         println(getEntity.body)
     }
 
     @Test
-    fun `Getting a user by IBAN returns that user`(){
-        assertThat(getEntity.body, containsString("DE123"))
+    fun `Getting by IBAN returns the correct user`(){
+        assertThat(getEntity.body, containsString("DE6543"))
     }
 
 

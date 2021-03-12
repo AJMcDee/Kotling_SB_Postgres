@@ -9,4 +9,5 @@ public interface AccountRepository: CrudRepository<Account, Long> {
     fun findByIban(iban: String): Account
     fun findByToken(token: String): Account
     fun findByIbanAndPassword(iban: String, password: String): Account
+    fun existsAccountByIban (iban:String): Boolean
 }

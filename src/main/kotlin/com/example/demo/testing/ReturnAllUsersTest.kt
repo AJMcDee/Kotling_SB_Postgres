@@ -27,13 +27,13 @@ class ReturnAllUsersTest() {
     val restTemplate = TestRestTemplate()
 
     @Test
-    fun `Running get request returns positive HTTP status`() {
+    fun `Getting all accounts returns positive HTTP Status`() {
         val entity = restTemplate.getForEntity<String>("http://localhost:8080/accounts")
         assertThat(entity.statusCode, equalTo(HttpStatus.OK))
     }
 
     @Test
-    fun `Get-requesting all accounts returns an array`() {
+    fun `Getting all accounts returns an array`() {
         val entity = restTemplate.getForEntity<String>("http://localhost:8080/accounts")
         assertThat(entity.statusCode, equalTo(HttpStatus.OK))
         assertThat(entity.body, startsWith("["))

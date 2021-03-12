@@ -26,8 +26,11 @@ class BankService {
     }
 
     fun addAccount(newAccount: Account): MutableList<Account> {
-        repository.save(newAccount)
+        if (!repository.existsAccountByIban(newAccount.iban)) {
+            repository.save(newAccount)
+        }
         return getAllAccounts()
+
     }
 
     fun authenticate(loginAttempt : LoginAttempt): String {
