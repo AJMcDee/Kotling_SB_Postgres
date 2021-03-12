@@ -20,16 +20,6 @@ class BankController (private val bankService: BankService){
     @Autowired
     lateinit var repository: AccountRepository
 
-    @GetMapping("/save")
-    fun process(): String {
-        repository.save(Account(1,"Jack","DE12345","password12345",132.52,""))
-        repository.save(Account(2,"Jill","DE23456","password12345",13522.52,""))
-        repository.save(Account(3,"Jane","DE34567","password12345",1325.52,""))
-        repository.save(Account(4,"Joseph","DE45678","password12345",32.52,""))
-        repository.save(Account(5,"Julia","DE56789","password12345",12.52,""))
-        return "Done"
-    }
-
     @GetMapping("/accounts")
     fun sendAccounts(): List<Account> {
         return bankService.getAllAccounts();
