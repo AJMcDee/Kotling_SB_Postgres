@@ -1,7 +1,6 @@
 package com.example.demo.testing
 
 import com.example.demo.model.Account
-import com.fasterxml.jackson.databind.ObjectMapper
 import org.hamcrest.CoreMatchers.*
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.core.IsEqual.equalTo
@@ -12,32 +11,27 @@ import org.springframework.http.HttpStatus
 import org.junit.*
 import org.springframework.boot.test.web.client.getForEntity
 import org.springframework.boot.test.web.client.postForEntity
-import org.springframework.boot.web.server.LocalServerPort
 import org.springframework.http.HttpEntity
 import org.springframework.http.HttpHeaders
-import org.springframework.boot.test.json.*
+
 
 @SpringBootTest
-class ReturnAllUsersTest() {
-
-
-
-
+class GetUserTest() {
     @Autowired
     val restTemplate = TestRestTemplate()
 
+    val getEntity = restTemplate.getForEntity<String>("http://localhost:8080/account/DE123")
+
     @Test
-    fun `Running get request returns positive HTTP status`() {
-        val entity = restTemplate.getForEntity<String>("http://localhost:8080/accounts")
-        assertThat(entity.statusCode, equalTo(HttpStatus.OK))
+    fun `Posting get with IBAN returns positive status code`(){
+
+        assertThat(getEntity.statusCode, equalTo(HttpStatus.OK))
+        println(getEntity.body)
     }
 
     @Test
-    fun `Get-requesting all accounts returns an array`() {
-        val entity = restTemplate.getForEntity<String>("http://localhost:8080/accounts")
-        assertThat(entity.statusCode, equalTo(HttpStatus.OK))
-        assertThat(entity.body, startsWith("["))
-        assertThat(entity.body, endsWith("]"))
+    fun `Getting a user by IBAN returns that user`(){
+        assertThat(getEntity.body, containsString("DE123"))
     }
 
 

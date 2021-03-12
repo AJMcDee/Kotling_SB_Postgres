@@ -8,14 +8,12 @@ data class LoginAttempt (val iban: String, val password: String)
 
 @Entity
 @Table(name = "accounts")
-class Account (
-
-    // ID is not being generated before attempting to add it to the database. Why??
+class Account(
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(columnDefinition = "serial")
-    val id: Int = 1,
+    val id: Int? = 1,
 
     @Column(name = "fullname")
     val name: String = "",
@@ -42,6 +40,6 @@ class Account (
     }
 
     override fun toString(): String {
-        return "Account for $name, IBAN $iban, now has balance $$balance."
+        return "{Account for $name, IBAN $iban, now has balance $$balance.}"
     }
 }
