@@ -56,7 +56,8 @@ class BankService {
         val accessRequest = AccessRequest(updateRequest.token)
         var currentAccount = verifyAccountAccess(accessRequest)
         currentAccount.updateBalance(updateRequest.amount,updateRequest.operation)
-        return repository.save(currentAccount)
+        repository.save(currentAccount)
+        return currentAccount
     }
 
     private fun getNewToken() : String {

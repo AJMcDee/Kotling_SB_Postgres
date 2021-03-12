@@ -2,7 +2,7 @@ package com.example.demo.model
 
 import javax.persistence.*;
 
-data class UpdateRequest (val iban: String, val token: String, val amount: Double, val operation: String )
+data class UpdateRequest (val token: String, val amount: Double, val operation: String )
 data class AccessRequest (val token: String)
 data class LoginAttempt (val iban: String, val password: String)
 
@@ -10,9 +10,12 @@ data class LoginAttempt (val iban: String, val password: String)
 @Table(name = "accounts")
 class Account (
 
+    // ID is not being generated before attempting to add it to the database. Why??
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Int = 0,
+    @Column(columnDefinition = "serial")
+    val id: Int = 1,
 
     @Column(name = "fullname")
     val name: String = "",
@@ -27,7 +30,7 @@ class Account (
     var balance: Double = 0.00,
 
     @Column(name = "token")
-    var token: String = ""
+    var token: String = "default"
 ) {
     fun updateBalance(amount: Double, operation: String) {
         if (operation == "withdraw") {
