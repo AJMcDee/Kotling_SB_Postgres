@@ -1,6 +1,6 @@
 package com.example.demo.testing
 
-import com.example.demo.model.Account
+
 import org.hamcrest.CoreMatchers.*
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.core.IsEqual.equalTo
@@ -10,10 +10,7 @@ import org.springframework.boot.test.web.client.TestRestTemplate
 import org.springframework.http.HttpStatus
 import org.junit.*
 import org.springframework.boot.test.web.client.getForEntity
-import org.springframework.boot.test.web.client.postForEntity
-import org.springframework.http.HttpEntity
-import org.springframework.http.HttpHeaders
-import org.springframework.web.client.HttpStatusCodeException
+
 
 
 @SpringBootTest
@@ -35,9 +32,9 @@ class GetUserTest() {
     }
 
     @Test
-    fun `Requesting a non-existing IBAN returns a 500`(){
+    fun `Requesting a non-existing IBAN returns a BAD REQUEST status`(){
         val badGetEntity = restTemplate.getForEntity<String>("http://localhost:8080/account/AUS2041")
-        assertThat(badGetEntity.statusCode, equalTo(HttpStatus.INTERNAL_SERVER_ERROR))
+        assertThat(badGetEntity.statusCode, equalTo(HttpStatus.BAD_REQUEST))
     }
 
 

@@ -9,6 +9,8 @@ import com.example.demo.model.Account
 import com.example.demo.model.LoginAttempt
 import com.example.demo.model.UpdateRequest
 import com.example.demo.repository.AccountRepository
+import org.springframework.http.HttpStatus
+
 
 
 @SpringBootApplication
@@ -27,7 +29,10 @@ class BankController (private val bankService: BankService){
 
     @GetMapping("/account/{iban}")
     fun getAccount(@PathVariable iban: String): Account {
-        return bankService.getAccountByIBAN(iban);
+       try { return bankService.getAccountByIBAN(iban); }
+       catch(exception: AccountNotFoundException) {
+           throw AccountNotFoundException()
+       }
     }
 
     @PostMapping(path = ["/accounts"])
@@ -40,10 +45,11 @@ class BankController (private val bankService: BankService){
         return bankService.authenticate(loginAttempt)
     }
 
-    @DeleteMapping("/account")
-    fun deleteAccount(@RequestBody accessRequest: AccessRequest): MutableList<Account> {
-        return bankService.deleteAccount(accessRequest)
+    @DeleteMapping("/account/{token}")
+    fun deleteAccount(@PathVariable token: String): MutableList<Account> {
+        return bankService.deleteAccount(token)
     }
+
 
     @PatchMapping(path = ["/account"])
     fun updateBalance(@RequestBody updateRequest: UpdateRequest): Account {

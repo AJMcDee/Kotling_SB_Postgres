@@ -17,16 +17,12 @@ class BankService {
         repository.findAll().forEach {
             accounts.add(it)
         }
-
         return accounts
     }
 
     fun getAccountByIBAN(iban: String): Account {
-        try {
-            return repository.findByIban(iban)
-        } catch(e: Error) {
-            throw AccountNotFoundException(iban)
-        }
+        if (!repository.existsByIban(iban)) throw AccountNotFoundException()
+        return repository.findByIban(iban)
        }
 
     fun addAccount(newAccount: Account): MutableList<Account> {
@@ -38,30 +34,31 @@ class BankService {
     }
 
     fun authenticate(loginAttempt : LoginAttempt): String {
-        val currentAccount = repository.findByIbanAndPassword(loginAttempt.iban, loginAttempt.password)
-        if (currentAccount == null) {
-            throw Error("No such account exists")
-        } else {
+        val iban = loginAttempt.iban
+        val password = loginAttempt.password
+        if (!repository.existsByIbanAndPassword(iban, password)) throw IncorrectCredentialsException()
+
+        val currentAccount = repository.findByIbanAndPassword(iban, password)
             val token = getNewToken()
             currentAccount.token = token;
             repository.save(currentAccount);
             return token
-        }
     }
 
 
-    fun verifyAccountAccess(accessRequest: AccessRequest) : Account {
-        return repository.findByToken(accessRequest.token)
+    fun verifyAccountAccess(token: String) : Account {
+        if (!repository.existsByToken(token)) throw IncorrectCredentialsException()
+        return repository.findByToken(token)
     }
 
-    fun deleteAccount(accessRequest: AccessRequest) : MutableList<Account> {
-        repository.delete(verifyAccountAccess(accessRequest))
+    fun deleteAccount(token: String) : MutableList<Account> {
+        repository.delete(verifyAccountAccess(token))
         return getAllAccounts()
     }
 
     fun updateBalance(updateRequest: UpdateRequest) : Account {
-        val accessRequest = AccessRequest(updateRequest.token)
-        var currentAccount = verifyAccountAccess(accessRequest)
+        val token = updateRequest.token
+        var currentAccount = verifyAccountAccess(token)
         currentAccount.updateBalance(updateRequest.amount,updateRequest.operation)
         repository.save(currentAccount)
         return currentAccount
