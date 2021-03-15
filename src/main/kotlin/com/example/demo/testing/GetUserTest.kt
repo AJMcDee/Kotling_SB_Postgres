@@ -13,6 +13,7 @@ import org.springframework.boot.test.web.client.getForEntity
 import org.springframework.boot.test.web.client.postForEntity
 import org.springframework.http.HttpEntity
 import org.springframework.http.HttpHeaders
+import org.springframework.web.client.HttpStatusCodeException
 
 
 @SpringBootTest
@@ -24,7 +25,6 @@ class GetUserTest() {
 
     @Test
     fun `Getting with IBAN returns positive status code`(){
-
         assertThat(getEntity.statusCode, equalTo(HttpStatus.OK))
         println(getEntity.body)
     }
@@ -32,6 +32,12 @@ class GetUserTest() {
     @Test
     fun `Getting by IBAN returns the correct user`(){
         assertThat(getEntity.body, containsString("DE6543"))
+    }
+
+    @Test
+    fun `Requesting a non-existing IBAN returns a 500`(){
+        val badGetEntity = restTemplate.getForEntity<String>("http://localhost:8080/account/AUS2041")
+        assertThat(badGetEntity.statusCode, equalTo(HttpStatus.INTERNAL_SERVER_ERROR))
     }
 
 

@@ -11,16 +11,9 @@ import org.springframework.boot.test.web.client.TestRestTemplate
 import org.springframework.http.HttpStatus
 import org.junit.*
 import org.springframework.boot.test.web.client.getForEntity
-import org.springframework.boot.test.web.client.postForEntity
-import org.springframework.boot.web.server.LocalServerPort
-import org.springframework.http.HttpEntity
-import org.springframework.http.HttpHeaders
-import org.springframework.boot.test.json.*
 
 @SpringBootTest
 class ReturnAllUsersTest() {
-
-
 
 
     @Autowired

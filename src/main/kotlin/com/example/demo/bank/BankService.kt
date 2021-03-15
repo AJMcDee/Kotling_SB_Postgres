@@ -22,8 +22,12 @@ class BankService {
     }
 
     fun getAccountByIBAN(iban: String): Account {
-        return repository.findByIban(iban)
-    }
+        try {
+            return repository.findByIban(iban)
+        } catch(e: Error) {
+            throw AccountNotFoundException(iban)
+        }
+       }
 
     fun addAccount(newAccount: Account): MutableList<Account> {
         if (!repository.existsAccountByIban(newAccount.iban)) {

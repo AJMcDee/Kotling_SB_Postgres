@@ -30,22 +30,22 @@ class BankController (private val bankService: BankService){
         return bankService.getAccountByIBAN(iban);
     }
 
-    @PostMapping(path = ["/accounts"], consumes = ["application/json"], produces = ["application/json"])
+    @PostMapping(path = ["/accounts"])
     fun addMember(@RequestBody newAccount : Account): MutableList<Account> {
         return bankService.addAccount(newAccount);
     }
 
-    @PostMapping(path = ["/authenticate"], consumes = ["application/json"], produces=["application/json"])
+    @PostMapping(path = ["/authenticate"])
     fun authenticate(@RequestBody loginAttempt: LoginAttempt): String {
         return bankService.authenticate(loginAttempt)
     }
 
-    @DeleteMapping("/account", consumes = ["application/json"], produces = ["application/json"])
+    @DeleteMapping("/account")
     fun deleteAccount(@RequestBody accessRequest: AccessRequest): MutableList<Account> {
         return bankService.deleteAccount(accessRequest)
     }
 
-    @PatchMapping(path = ["/account"], consumes = ["application/json"], produces=["application/json"])
+    @PatchMapping(path = ["/account"])
     fun updateBalance(@RequestBody updateRequest: UpdateRequest): Account {
         return bankService.updateBalance(updateRequest)
 
