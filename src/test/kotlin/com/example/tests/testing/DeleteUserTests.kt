@@ -1,9 +1,7 @@
-package com.example.demo.testing
+package com.example.tests.testing
 
-import com.example.demo.model.AccessRequest
+import com.example.demo.bank.BankService
 import org.springframework.boot.test.web.client.getForEntity
-import org.springframework.http.HttpMethod
-import kotlin.math.floor
 import com.example.demo.model.Account
 import com.example.demo.model.LoginAttempt
 import org.hamcrest.CoreMatchers.*
@@ -28,7 +26,7 @@ class DeleteUserTests() {
     @Test
     fun `Deleting a user removes them from the database`() {
         // Create a new user
-        val randomIBAN = "DE" + floor(Math.random() * 9999999).toInt()
+        val randomIBAN = BankService.generateIBAN();
         val newAccount: Account = Account(null, "Test Name", randomIBAN, "password", 99.99)
         val headers: HttpHeaders = HttpHeaders()
         val request: HttpEntity<Account> = HttpEntity<Account>(newAccount, headers)
@@ -55,8 +53,6 @@ class DeleteUserTests() {
         val databaseCheckEntity = restTemplate.getForEntity<String>("http://localhost:8080/accounts")
         assertThat(databaseCheckEntity.statusCode, equalTo(HttpStatus.OK))
         assertThat(databaseCheckEntity.body, not(containsString(randomIBAN)))
-
-
     }
 }
 

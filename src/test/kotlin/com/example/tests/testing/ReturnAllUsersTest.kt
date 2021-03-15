@@ -1,4 +1,4 @@
-package com.example.demo.testing
+package com.example.tests.testing
 
 import com.example.demo.model.Account
 import com.fasterxml.jackson.databind.ObjectMapper

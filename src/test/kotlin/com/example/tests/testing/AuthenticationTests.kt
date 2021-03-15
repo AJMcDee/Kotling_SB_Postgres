@@ -1,8 +1,6 @@
-package com.example.demo.testing
+package com.example.tests.testing
 
-import com.example.demo.model.Account
 import com.example.demo.model.LoginAttempt
-import org.hamcrest.CoreMatchers.*
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.core.IsEqual.equalTo
 import org.springframework.beans.factory.annotation.Autowired

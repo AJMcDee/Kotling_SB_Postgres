@@ -1,4 +1,4 @@
-package com.example.demo.testing
+package com.example.tests.testing
 
 
 import org.hamcrest.CoreMatchers.*

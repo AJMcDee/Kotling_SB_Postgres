@@ -9,6 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired
 @Service
 class BankService {
 
+    companion object {
+        fun generateIBAN() = "DE" + floor(Math.random() * 9999999).toInt()
+    }
+
     @Autowired
     lateinit var repository: AccountRepository
 

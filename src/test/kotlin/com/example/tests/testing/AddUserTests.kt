@@ -1,5 +1,6 @@
-package com.example.demo.testing
+package com.example.tests.testing
 
+import com.example.demo.bank.BankService
 import com.example.demo.model.Account
 import junit.framework.Assert.assertFalse
 import org.hamcrest.CoreMatchers.*
@@ -13,17 +14,19 @@ import org.junit.*
 import org.springframework.boot.test.web.client.postForEntity
 import org.springframework.http.HttpEntity
 import org.springframework.http.HttpHeaders
-import kotlin.math.floor
 
 
 @SpringBootTest
 class AddUserTests() {
+
+
+
     @Autowired
     val restTemplate = TestRestTemplate()
 
 
     // For a new account
-    val randomIBAN = "DE" + floor(Math.random() * 99999999)
+    val randomIBAN = BankService.generateIBAN()
     val testAccount: Account = Account(null,"Test Name",randomIBAN,"password",99.99)
     val headers: HttpHeaders = HttpHeaders()
     var request: HttpEntity<Account> = HttpEntity<Account>(testAccount, headers)
