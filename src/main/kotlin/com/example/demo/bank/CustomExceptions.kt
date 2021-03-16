@@ -17,3 +17,8 @@ class IncorrectCredentialsException: Exception() {
 class InvalidOperationException: Exception() {
 
 }
+
+@ResponseStatus(value=HttpStatus.BAD_REQUEST, reason="Invalid transfer: please ensure your request contains an IBAN")
+class BadTransferException: Exception() {
+
+}

@@ -4,8 +4,12 @@ import com.example.demo.model.TransactionRequest
 import com.example.demo.model.UpdateRequest
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Bean
+import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Component
+import org.springframework.web.client.HttpStatusCodeException
 import org.springframework.web.client.RestTemplate
+import org.springframework.web.client.postForEntity
+import org.springframework.web.client.postForObject
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
@@ -23,7 +27,8 @@ class BankClient  {
     @Autowired
     lateinit var restTemplate: RestTemplate
 
-    private fun createTransactionRequest(iban: String, updateRequest: UpdateRequest): TransactionRequest {
+    fun createTransactionRequest(iban: String, updateRequest: UpdateRequest): TransactionRequest {
+
         var fromIban: String? = null
         var toIban: String? = null
         val amount = updateRequest.amount
@@ -43,10 +48,16 @@ class BankClient  {
         return TransactionRequest(toIban, fromIban, amount, type, date)
     }
 
+
     fun sendNewTransaction(iban: String, updateRequest: UpdateRequest) {
         val transactionRequest = createTransactionRequest(iban, updateRequest)
-        val result = restTemplate.postForObject("http://localhost:8081/transactions", transactionRequest, String.javaClass)
-        println(result)
+        try {
+            val result = restTemplate.postForEntity<String>("http://localhost:8081/transactions", transactionRequest, String.javaClass)
+            println(result)
+        } catch (error : HttpStatusCodeException) {
+            throw BadTransferException()
+        }
+
     }
 
     private fun getFormattedDateAsString() : String {

@@ -6,6 +6,7 @@ import com.example.demo.model.*
 import com.example.demo.repository.AccountRepository
 import org.springframework.beans.factory.annotation.Autowired
 import com.example.demo.bank.BankClient
+import org.springframework.http.HttpStatus
 
 @Service
 class BankService (private val bankClient: BankClient) {
@@ -63,9 +64,13 @@ class BankService (private val bankClient: BankClient) {
 
     fun updateBalance(token: String, updateRequest: UpdateRequest) : Account {
         var currentAccount = verifyAccountAccess(token)
+
+
+        bankClient.sendNewTransaction(currentAccount.iban, updateRequest)
+
+
         currentAccount.updateBalance(updateRequest.amount,updateRequest.operation)
         repository.save(currentAccount)
-        bankClient.sendNewTransaction(currentAccount.iban, updateRequest)
         return currentAccount
     }
 

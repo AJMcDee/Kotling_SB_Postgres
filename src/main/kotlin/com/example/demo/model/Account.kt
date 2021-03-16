@@ -30,8 +30,8 @@ class Account(
     var token: String = "default"
 ) {
     fun updateBalance(amount: Double, operation: String) {
-        if (operation == "withdraw") {
-            if (amount > this.balance) throw Error("Withdrawal amount too high")
+        if (operation == "withdraw" || operation == "transfer") {
+            if (amount > this.balance) throw Error("$operation amount too high")
             else this.balance -= amount;
         } else if (operation == "deposit") {
             this.balance += amount;
@@ -39,6 +39,6 @@ class Account(
     }
 
     override fun toString(): String {
-        return "{Account for $name, IBAN $iban, now has balance $$balance.}"
+        return "Account for $name, IBAN $iban, now has balance $$balance."
     }
 }
