@@ -1,6 +1,6 @@
 package com.example.demo.bank
 
-import com.example.demo.model.AccessRequest
+
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.web.bind.annotation.*
 import org.springframework.beans.factory.annotation.Autowired
@@ -50,11 +50,9 @@ class BankController (private val bankService: BankService){
         return bankService.deleteAccount(token)
     }
 
-
-    @PatchMapping(path = ["/account"])
-    fun updateBalance(@RequestBody updateRequest: UpdateRequest): Account {
-        return bankService.updateBalance(updateRequest)
-
+    @PostMapping("/account/{token}")
+    fun balanceUpdate(@PathVariable token:String, @RequestBody updateRequest: UpdateRequest): Account {
+        return bankService.updateBalance(token, updateRequest)
     }
 
 }

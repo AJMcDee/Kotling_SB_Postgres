@@ -2,8 +2,7 @@ package com.example.demo.model
 
 import javax.persistence.*;
 
-data class UpdateRequest (val token: String, val amount: Double, val operation: String )
-data class AccessRequest (val token: String)
+data class UpdateRequest (val amount: Double, val operation: String, val toIban: String? )
 data class LoginAttempt (val iban: String, val password: String)
 
 @Entity

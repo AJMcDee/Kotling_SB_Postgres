@@ -12,3 +12,8 @@ class AccountNotFoundException: Exception() {
 class IncorrectCredentialsException: Exception() {
 
 }
+
+@ResponseStatus(value=HttpStatus.BAD_REQUEST, reason="Invalid Operation")
+class InvalidOperationException: Exception() {
+
+}

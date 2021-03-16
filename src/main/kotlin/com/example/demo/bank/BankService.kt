@@ -5,9 +5,10 @@ import kotlin.math.floor
 import com.example.demo.model.*
 import com.example.demo.repository.AccountRepository
 import org.springframework.beans.factory.annotation.Autowired
+import com.example.demo.bank.BankClient
 
 @Service
-class BankService {
+class BankService (private val bankClient: BankClient) {
 
     companion object {
         fun generateIBAN() = "DE" + floor(Math.random() * 9999999).toInt()
@@ -60,11 +61,11 @@ class BankService {
         return getAllAccounts()
     }
 
-    fun updateBalance(updateRequest: UpdateRequest) : Account {
-        val token = updateRequest.token
+    fun updateBalance(token: String, updateRequest: UpdateRequest) : Account {
         var currentAccount = verifyAccountAccess(token)
         currentAccount.updateBalance(updateRequest.amount,updateRequest.operation)
         repository.save(currentAccount)
+        bankClient.sendNewTransaction(currentAccount.iban, updateRequest)
         return currentAccount
     }
 
